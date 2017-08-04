@@ -67,6 +67,10 @@ class Query(object):
         self._stats.append('StatsOr: ' + stats_str)
         return self
 
+    def stats(self, stats_str):
+        self._stats.append(stats_str)
+        return self
+
 
 class Socket(object):
     def __init__(self, peer):
