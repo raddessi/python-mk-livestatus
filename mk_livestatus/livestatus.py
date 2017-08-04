@@ -16,6 +16,7 @@ class Query(object):
         self._resource = resource
         self._columns = []
         self._filters = []
+        self._stats = []
 
     def call(self):
         try:
@@ -30,9 +31,15 @@ class Query(object):
         request = 'GET %s' % (self._resource)
         if self._columns and any(self._columns):
             request += '\nColumns: %s' % (' '.join(self._columns))
+
+        if self._stats:
+            for stats_line in self._stats:
+                request += '\n' + stats_line
+
         if self._filters:
             for filter_line in self._filters:
-                request += '\nFilter: %s' % (filter_line)
+                request += '\n' + filter_line
+
         request += '\nOutputFormat: json\nColumnHeaders: on\n'
         return request
 
@@ -41,7 +48,23 @@ class Query(object):
         return self
 
     def filter(self, filter_str):
-        self._filters.append(filter_str)
+        self._filters.append('Filter: ' + filter_str)
+        return self
+
+    def stats(self, stats_str):
+        self._stats.append('Stats: ' + stats_str)
+        return self
+
+    def stats_and(self, stats_str):
+        self._stats.append('StatsAnd: ' + stats_str)
+        return self
+
+    def stats_group_by(self, stats_str):
+        self._stats.append('StatsGroupBy: ' + stats_str)
+        return self
+
+    def stats_or(self, stats_str):
+        self._stats.append('StatsOr: ' + stats_str)
         return self
 
 
