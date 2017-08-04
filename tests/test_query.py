@@ -17,9 +17,11 @@ ColumnHeaders: on
 def test_query_2():
     q = Query(None, 'services')
     q.columns('host_name', 'service_description', 'plugin_output', 'state')
+    q.stats('state = 0')
     q.filter('host_name = localhost')
     expected = '''GET services
 Columns: host_name service_description plugin_output state
+Stats: state = 0
 Filter: host_name = localhost
 OutputFormat: json
 ColumnHeaders: on
